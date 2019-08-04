@@ -25,6 +25,10 @@
 #include "common/DataDirectories.h"
 #include "base/Log.h"
 
+#ifndef WM_MOUSEWHEEL
+#define WM_MOUSEWHEEL 0x020E
+#endif
+
  //
  // debugging compile flag.  when not zero the server doesn't grab
  // the keyboard when the mouse leaves the server screen.  this
