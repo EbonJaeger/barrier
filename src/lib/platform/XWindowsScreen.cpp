@@ -1883,7 +1883,7 @@ XWindowsScreen::mapButtonToX(ButtonID id) const
 		return id;
 	case kButtonExtra0:
 		return 8;
-	case kButtonExtra0:
+	case kButtonExtra1:
 		return 9;
 	default:
 		return 0;
