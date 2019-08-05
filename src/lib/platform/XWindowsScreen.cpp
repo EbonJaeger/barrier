@@ -839,10 +839,10 @@ XWindowsScreen::fakeMouseWheel(SInt32 xDelta, SInt32 yDelta) const
         return;
     }
 
-    unsigned int xButton;
-
     // 4,  5,    6,    7
     // up, down, left, right
+    unsigned int xButton;
+
     if (yDelta) { // vertical scroll
         numEvents = y_accumulateMouseScroll(yDelta);
         if (numEvents >= 0) {
@@ -858,7 +858,7 @@ XWindowsScreen::fakeMouseWheel(SInt32 xDelta, SInt32 yDelta) const
             xButton = 7; // right
         }
         else {
-            xButton = 8; // left
+            xButton = 6; // left
         }
     }
 
