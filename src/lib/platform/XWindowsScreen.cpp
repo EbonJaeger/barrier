@@ -67,7 +67,7 @@ XWindowsScreen::XWindowsScreen(
 	m_isPrimary(isPrimary),
 	m_mouseScrollDelta(mouseScrollDelta),
     m_x_accumulatedScroll(0),
-	m_y_accumulatedScroll(0),
+    m_y_accumulatedScroll(0),
 	m_display(NULL),
 	m_root(None),
 	m_window(None),
@@ -834,31 +834,33 @@ XWindowsScreen::fakeMouseWheel(SInt32 xDelta, SInt32 yDelta) const
 {
     int numEvents;
 
-	if ((!xDelta && !yDelta) || (xDelta && yDelta)) {
-		// Invalid scrolling inputs
-		return;
-	}
+    if ((!xDelta && !yDelta) || (xDelta && yDelta)) {
+        // Invalid scrolling inputs
+        return;
+    }
 
-	// 4,  5,    6,    7
-	// up, down, left, right
-	if (yDelta) { // vertical scroll
-		numEvents = y_accumulatedMouseScroll(yDelta);
-		if (numEvents > = 0) {
-			xButton = 4; // up
-		}
-		else {
-			xButton = 5; // down
-		}
-	}
-	else { // horizontal scroll
-		numEvents = x_accumulatedMouseScroll(xDelta);
-		if (numEvents > = 0) {
-			xButton = 7; // right
-		}
-		else {
-			xButton = 8; // left
-		}
-	}
+    unsigned int xButton;
+
+    // 4,  5,    6,    7
+    // up, down, left, right
+    if (yDelta) { // vertical scroll
+        numEvents = y_accumulateMouseScroll(yDelta);
+        if (numEvents >= 0) {
+            xButton = 4; // up
+        }
+        else {
+            xButton = 5; // down
+        }
+    }
+    else { // horizontal scroll
+        numEvents = x_accumulateMouseScroll(xDelta);
+        if (numEvents >= 0) {
+            xButton = 7; // right
+        }
+        else {
+            xButton = 8; // left
+        }
+    }
 
     numEvents = std::abs(numEvents);
 
@@ -1541,11 +1543,11 @@ XWindowsScreen::onMouseRelease(const XButtonEvent& xbutton)
 		// wheel backward (toward user)
 		sendEvent(m_events->forIPrimaryScreen().wheel(), WheelInfo::alloc(0, -120));
 	}
-	else if (xButton.button == 6) {
+	else if (xbutton.button == 6) {
 		// wheel left
 		sendEvent(m_events->forIPrimaryScreen().wheel(), WheelInfo::alloc(-120, 0));
 	}
-	else if (xButton.button == 7) {
+	else if (xbutton.button == 7) {
 		// wheel right
 		sendEvent(m_events->forIPrimaryScreen().wheel(), WheelInfo::alloc(120, 0));
 	}
@@ -1632,10 +1634,10 @@ XWindowsScreen::x_accumulateMouseScroll(SInt32 xDelta) const
 int
 XWindowsScreen::y_accumulateMouseScroll(SInt32 yDelta) const
 {
-	m_y_accumulatedScroll += yDelta;
-	int numEvents = m_y_accumulatedScroll / m_mouseScrollDelta;
-	m_y_accumulatedScroll -= numEvents * m_mouseScrollDelta;
-	return numEvents;
+    m_y_accumulatedScroll += yDelta;
+    int numEvents = m_y_accumulatedScroll / m_mouseScrollDelta;
+    m_y_accumulatedScroll -= numEvents * m_mouseScrollDelta;
+    return numEvents;
 }
 
 Cursor
@@ -1863,7 +1865,7 @@ XWindowsScreen::mapButtonFromX(const XButtonEvent* event) const
 	{
 	case 1: case 2: case 3: // kButtonLeft, Middle, Right
 		return static_cast<ButtonID>(button);
-	case 4: case 4: case 6: case 7: // scroll up, down, left, right -- ignored here
+	case 4: case 5: case 6: case 7: // scroll up, down, left, right -- ignored here
 		return kButtonNone;
 	case 8: // mouse button 4
 		return kButtonExtra0;

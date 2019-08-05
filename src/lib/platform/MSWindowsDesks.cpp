@@ -609,12 +609,12 @@ MSWindowsDesks::deskThread(void* vdesk)
 	BOOL vistaOrGreater = FALSE;
 
 	{
-		OSVERSIONINFOW osvi;
-		osvi.dwOSVersionInfoSize = sizeof(osvi);
-		if (GetVersionExW(&osvi)) {
-			vistaOrGreater = osvi.dwMajorVersion >= 6;
-		}
-	}
+        OSVERSIONINFOW osvi;
+        osvi.dwOSVersionInfoSize = sizeof(osvi);
+        if (GetVersionExW(&osvi)) {
+            vistaOrGreater = osvi.dwMajorVersion >= 6;
+        }
+    }
 
     // use given desktop for this thread
     Desk* desk              = static_cast<Desk*>(vdesk);
@@ -700,13 +700,12 @@ MSWindowsDesks::deskThread(void* vdesk)
             break;
 
         case BARRIER_MSG_FAKE_WHEEL:
-            // XXX -- add support for x-axis scrolling
             if (msg.lParam != 0) {
                 mouse_event(MOUSEEVENTF_WHEEL, 0, 0, (DWORD)msg.lParam, 0);
-			}
-			else if (vistaOrGreater && msg.wParam != 0) {
-				mouse_event(MOUSEEVENTF_HWHEEL, 0, 0, (DWORD)msg.wParam, 0);
-			}
+            }
+            else if (vistaOrGreater && msg.wParam != 0) {
+                mouse_event(MOUSEEVENTF_HWHEEL, 0, 0, (DWORD)msg.wParam, 0);
+            }
             break;
 
         case BARRIER_MSG_CURSOR_POS: {
