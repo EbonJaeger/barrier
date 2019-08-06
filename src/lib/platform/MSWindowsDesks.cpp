@@ -45,7 +45,7 @@
 #define SPI_GETSCREENSAVERRUNNING 114
 #endif
 
-#if !defined(MOUSEEVENTF_WHEEL)
+#if !defined(MOUSEEVENTF_HWHEEL)
 #define MOUSEEVENTF_HWHEEL 0x1000
 #endif
 
